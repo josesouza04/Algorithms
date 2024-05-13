@@ -33,24 +33,28 @@ class Graph:
 def createGraph():
     try:
         n = int(input('Enter the number of vertices: '))
-        if n < 0: raise ValueError
-        elif n == 0: return None
+        if n < 0: 
+            raise ValueError
+        elif n == 0: 
+            return None
         G = Graph(n)
         print('Now, enter the edges of the graph (u, v) - (to finish, enter -1 -1): ')
         while True:
             if G.isComplete():
                 print('Graph is complete.')
                 break
-            if u < 0 or v < 0: raise ValueError
             u, v = map(int, input().split())
-            if u == -1 and v == -1:
+            if u < -1 or v < -1: 
+                continue
+            elif u == -1 and v == -1: 
                 break
             elif G.existsEdge(u, v):
                 print('Edge already exists. Try again.')
+            elif u >= n or v >= n:
+                continue
             else: 
                 G.addEdge(u, v)
         return G
-    
     except ValueError:
         print('Invalid input. Try again.')
         return createGraph()
@@ -66,10 +70,10 @@ def printGraph(G: Graph):
         print()
 
 '''
-    for vertex u: 
-        if it is white, it has not been visited yet
-        if it is gray, it has not been finished yet
-        if it is black, it has been finished 
+for vertex u: 
+    if it is white, it has not been visited yet
+    if it is gray, it has not been finished yet
+    if it is black, it has been finished 
 '''
     
 def dfs(G : Graph): # to traverse the whole graph
@@ -84,7 +88,7 @@ def dfsVisit(G : Graph, u : int):
     for vertex in G.adj[u]: # to explore the neighbors of u
         if G.color[vertex] == 'white':
             G.pi[vertex] = u
-            dfsVisit(vertex)
+            dfsVisit(G, vertex)
     G.color[u] = 'black' # u has been finished
     G.globalTime += 1 
     G.f[u] = G.globalTime
@@ -92,6 +96,12 @@ def dfsVisit(G : Graph, u : int):
 def main():
     myGraph = createGraph()
     printGraph(myGraph)
+
+    if myGraph != None:
+        dfs(myGraph)
+        print('Discovery and finish times: ')
+        for i in range(myGraph.__sizeof__()):
+            print(f'Vertex {i}: ({myGraph.d[i]}, {myGraph.f[i]})')
     return 0
 
 if __name__ == '__main__':
