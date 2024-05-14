@@ -1,6 +1,8 @@
 '''
     Adapted DFS algorithm to traverse a binary tree
     It returns the sum of the root-to-leaf paths
+
+    Taken by: https://www.youtube.com/watch?v=v8eChm8rkx4
 '''
 
 class TreeNode: 
